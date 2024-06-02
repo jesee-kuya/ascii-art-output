@@ -42,8 +42,9 @@ func Ascii(fileArr []string, wordsArr []string, lettersToColor string, colorCode
 					default:
 						if IsFlagPassed("output") {
 							fmt.Fprintf(file, fileArr[int(start)+i])
+						} else {
+							fmt.Print(fileArr[int(start)+i])
 						}
-						fmt.Print(fileArr[int(start)+i])
 					}
 				}
 				if IsFlagPassed("output") {
