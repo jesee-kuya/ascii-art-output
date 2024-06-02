@@ -15,35 +15,9 @@ import (
 func Ascii(fileArr []string, wordsArr []string, lettersToColor string, colorCode string, outputfile string) {
 	var count int
 	reset := "\033[0m"
-	if IsFlagPassed("output") {
-		file, err := os.Create(outputfile)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-
-		for _, val := range wordsArr {
-			if val != "" {
-				for i := 1; i <= 8; i++ {
-					for _, v := range val {
-						start := (v - 32) * 9
-						if len(lettersToColor) == 0 {
-							fmt.Fprint(file, colorCode+fileArr[int(start)+i]+reset)
-						} else if strings.Contains(lettersToColor, string(v)) {
-							fmt.Fprintf(file, colorCode+fileArr[int(start)+i]+reset)
-						} else {
-							fmt.Fprintf(file, fileArr[int(start)+i])
-						}
-					}
-					fmt.Fprintln(file)
-				}
-			} else {
-				count++
-				if count < len(wordsArr) {
-					fmt.Fprintln(file)
-				}
-			}
-		}
+	file, err := os.Create(outputfile)
+	if err != nil {
+		fmt.Println(err)
 		return
 	}
 
@@ -52,19 +26,38 @@ func Ascii(fileArr []string, wordsArr []string, lettersToColor string, colorCode
 			for i := 1; i <= 8; i++ {
 				for _, v := range val {
 					start := (v - 32) * 9
-					if len(lettersToColor) == 0 {
-						fmt.Print(colorCode + fileArr[int(start)+i] + reset)
-					} else if strings.Contains(lettersToColor, string(v)) {
-						fmt.Print(colorCode + fileArr[int(start)+i] + reset)
-					} else {
+					switch {
+					case len(lettersToColor) == 0:
+						if IsFlagPassed("output") {
+							fmt.Fprint(file, colorCode+fileArr[int(start)+i]+reset)
+						} else {
+							fmt.Print(colorCode + fileArr[int(start)+i] + reset)
+						}
+					case strings.Contains(lettersToColor, string(v)):
+						if IsFlagPassed("output") {
+							fmt.Fprintf(file, colorCode+fileArr[int(start)+i]+reset)
+						} else {
+							fmt.Print(colorCode + fileArr[int(start)+i] + reset)
+						}
+					default:
+						if IsFlagPassed("output") {
+							fmt.Fprintf(file, fileArr[int(start)+i])
+						}
 						fmt.Print(fileArr[int(start)+i])
 					}
 				}
-				fmt.Println()
+				if IsFlagPassed("output") {
+					fmt.Fprintln(file)
+				} else {
+					fmt.Println()
+				}
 			}
 		} else {
 			count++
 			if count < len(wordsArr) {
+				if IsFlagPassed("output") {
+					fmt.Fprintln(file)
+				}
 				fmt.Println()
 			}
 		}

@@ -15,6 +15,9 @@ func main() {
 		if v == "--color" || v == "-color" {
 			fmt.Println("Usage: go run . [OPTION] [STRING]\n\nEX: go run . --color=<color> <letters to be colored> \"something\"")
 			return
+		} else if v == "--output" || v == "-output" {
+			fmt.Println("Usage: go run . [STRING] [BANNER]\n\nEX: go run . something standard")
+			return
 		}
 	}
 	var filename string
