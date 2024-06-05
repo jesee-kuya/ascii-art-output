@@ -16,7 +16,7 @@ func main() {
 			fmt.Println("Usage: go run . [OPTION] [STRING]\n\nEX: go run . --color=<color> <letters to be colored> \"something\"")
 			return
 		} else if v == "--output" || v == "-output" {
-			fmt.Println("Usage: go run . [STRING] [BANNER]\n\nEX: go run . something standard")
+			fmt.Println("Usage: go run . [OPTION] [STRING] [BANNER]\n\nEX: go run . --output=<fileName.txt> something standard")
 			return
 		}
 	}
@@ -58,6 +58,10 @@ func main() {
 	bannerContent, err := ascii.GetFileName(filename)
 	if err != nil {
 		fmt.Println(err)
+		return
+	}
+	if !ascii.IsFlagPassed("output") {
+		fmt.Println("Usage: go run . [OPTION] [STRING] [BANNER]\n\nEX: go run . --output=<fileName.txt> something standard")
 		return
 	}
 
