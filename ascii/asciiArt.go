@@ -28,38 +28,38 @@ func Ascii(fileArr []string, wordsArr []string, lettersToColor string, colorCode
 					start := (v - 32) * 9
 					switch {
 					case len(lettersToColor) == 0:
-						if IsFlagPassed("output") {
-							fmt.Fprint(file, colorCode+fileArr[int(start)+i]+reset)
-						} else {
+						if !IsFlagPassed("output") {
 							fmt.Print(colorCode + fileArr[int(start)+i] + reset)
 						}
+						fmt.Fprint(file, colorCode+fileArr[int(start)+i]+reset)
+
 					case strings.Contains(lettersToColor, string(v)):
-						if IsFlagPassed("output") {
-							fmt.Fprintf(file, colorCode+fileArr[int(start)+i]+reset)
-						} else {
+						if !IsFlagPassed("output") {
 							fmt.Print(colorCode + fileArr[int(start)+i] + reset)
 						}
+						fmt.Fprintf(file, colorCode+fileArr[int(start)+i]+reset)
+
 					default:
-						if IsFlagPassed("output") {
-							fmt.Fprintf(file, fileArr[int(start)+i])
-						} else {
+						if !IsFlagPassed("output") {
 							fmt.Print(fileArr[int(start)+i])
 						}
+						fmt.Fprintf(file, fileArr[int(start)+i])
+
 					}
 				}
-				if IsFlagPassed("output") {
-					fmt.Fprintln(file)
-				} else {
+				if !IsFlagPassed("output") {
 					fmt.Println()
 				}
+				fmt.Fprintln(file)
+
 			}
 		} else {
 			count++
 			if count < len(wordsArr) {
-				if IsFlagPassed("output") {
-					fmt.Fprintln(file)
+				if !IsFlagPassed("output") {
+					fmt.Println()
 				}
-				fmt.Println()
+				fmt.Fprintln(file)
 			}
 		}
 	}

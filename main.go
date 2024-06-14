@@ -60,10 +60,6 @@ func main() {
 		fmt.Println(err)
 		return
 	}
-	if !ascii.IsFlagPassed("output") {
-		fmt.Println("Usage: go run . [OPTION] [STRING] [BANNER]\n\nEX: go run . --output=<fileName.txt> something standard")
-		return
-	}
 
 	if ascii.IsFlagPassed("color") {
 		ascii.Color(colorflag, lettersTocolor, argsPassed, bannerContent, outputFlag)
