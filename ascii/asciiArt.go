@@ -2,7 +2,6 @@ package ascii
 
 import (
 	"fmt"
-	"os"
 	"strings"
 )
 
@@ -12,54 +11,29 @@ import (
 // wordsArr (a slice of strings representing the words to be printed),
 // lettersToColor (a string representing the letters to be colored),
 // and color (a string representing the color to be applied).
-func Ascii(fileArr []string, wordsArr []string, lettersToColor string, colorCode string, outputfile string) {
+func Ascii(s Receiver) {
 	var count int
 	reset := "\033[0m"
-	file, err := os.Create(outputfile)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
 
-	for _, val := range wordsArr {
+	for _, val := range s.WordsArr {
 		if val != "" {
 			for i := 1; i <= 8; i++ {
 				for _, v := range val {
 					start := (v - 32) * 9
-					switch {
-					case len(lettersToColor) == 0:
-						if !IsFlagPassed("output") {
-							fmt.Print(colorCode + fileArr[int(start)+i] + reset)
-						}
-						fmt.Fprint(file, colorCode+fileArr[int(start)+i]+reset)
-
-					case strings.Contains(lettersToColor, string(v)):
-						if !IsFlagPassed("output") {
-							fmt.Print(colorCode + fileArr[int(start)+i] + reset)
-						}
-						fmt.Fprintf(file, colorCode+fileArr[int(start)+i]+reset)
-
-					default:
-						if !IsFlagPassed("output") {
-							fmt.Print(fileArr[int(start)+i])
-						}
-						fmt.Fprintf(file, fileArr[int(start)+i])
-
+					if len(s.LettersToColor) == 0 {
+						fmt.Print(s.ColorCode + s.FileArr[int(start)+i] + reset)
+					} else if strings.Contains(s.LettersToColor, string(v)) {
+						fmt.Print(s.ColorCode + s.FileArr[int(start)+i] + reset)
+					} else {
+						fmt.Print(s.FileArr[int(start)+i])
 					}
 				}
-				if !IsFlagPassed("output") {
-					fmt.Println()
-				}
-				fmt.Fprintln(file)
-
+				fmt.Println()
 			}
 		} else {
 			count++
-			if count < len(wordsArr) {
-				if !IsFlagPassed("output") {
-					fmt.Println()
-				}
-				fmt.Fprintln(file)
+			if count < len(s.WordsArr) {
+				fmt.Println()
 			}
 		}
 	}
