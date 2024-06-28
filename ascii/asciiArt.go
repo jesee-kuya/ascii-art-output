@@ -41,6 +41,11 @@ func Ascii(s Receiver) {
 	}
 
 	if IsFlagPassed("output") {
+		validFileName, err := IsValidName(s.Outputflag)
+		if !validFileName {
+			fmt.Println(err)
+			return
+		}
 		file, err := os.Create(s.Outputflag)
 		if err != nil {
 			fmt.Println(err)
