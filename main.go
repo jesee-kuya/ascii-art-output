@@ -18,6 +18,7 @@ func main() {
 	var receive ascii.Receiver
 
 	flag.StringVar(&receive.Colorflag, "color", "reset", "color for color input")
+	flag.StringVar(&receive.Outputflag, "output", "banner.txt", "Write ascii output to a specified file")
 	flag.Parse()
 	argsPassed := flag.Args()
 

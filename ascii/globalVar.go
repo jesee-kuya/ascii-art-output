@@ -30,6 +30,7 @@ type RGB struct {
 
 type Receiver struct {
 	Colorflag           string
+	Outputflag          string
 	ArgsPassed          []string
 	FileArr             []string
 	WordsArr            []string

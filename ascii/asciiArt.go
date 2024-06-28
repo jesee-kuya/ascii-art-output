@@ -2,6 +2,7 @@ package ascii
 
 import (
 	"fmt"
+	"os"
 	"strings"
 )
 
@@ -14,6 +15,7 @@ import (
 func Ascii(s Receiver) {
 	var count int
 	reset := "\033[0m"
+	var outputBuilder strings.Builder
 
 	for _, val := range s.WordsArr {
 		if val != "" {
@@ -21,20 +23,36 @@ func Ascii(s Receiver) {
 				for _, v := range val {
 					start := (v - 32) * 9
 					if len(s.LettersToColor) == 0 {
-						fmt.Print(s.ColorCode + s.FileArr[int(start)+i] + reset)
+						outputBuilder.WriteString(s.ColorCode + s.FileArr[int(start)+i] + reset)
 					} else if strings.Contains(s.LettersToColor, string(v)) {
-						fmt.Print(s.ColorCode + s.FileArr[int(start)+i] + reset)
+						outputBuilder.WriteString(s.ColorCode + s.FileArr[int(start)+i] + reset)
 					} else {
-						fmt.Print(s.FileArr[int(start)+i])
+						outputBuilder.WriteString(s.FileArr[int(start)+i])
 					}
 				}
-				fmt.Println()
+				outputBuilder.WriteString("\n")
 			}
 		} else {
 			count++
 			if count < len(s.WordsArr) {
-				fmt.Println()
+				outputBuilder.WriteString("\n")
 			}
 		}
+	}
+
+	if IsFlagPassed("output") {
+		file, err := os.Create(s.Outputflag)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		defer file.Close()
+
+		_, err = file.WriteString(outputBuilder.String())
+		if err != nil {
+			fmt.Println(err)
+		}
+	} else {
+		fmt.Print(outputBuilder.String())
 	}
 }
