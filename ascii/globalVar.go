@@ -1,5 +1,7 @@
 package ascii
 
+//Our globla variable for capturing and soring our data
+
 var Colormap = map[string]string{
 	"yellow":  "\033[33;1m",
 	"red":     "\033[31;1m",
@@ -26,4 +28,15 @@ type RGB struct {
 	R int
 	G int
 	B int
+}
+
+type Receiver struct {
+	Colorflag           string
+	Outputflag          string
+	ArgsPassed          []string
+	FileArr             []string
+	WordsArr            []string
+	LettersToColor      string
+	ColorCode           string
+	IndexToStartDisplay int
 }
